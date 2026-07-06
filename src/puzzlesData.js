@@ -36,42 +36,42 @@ Vorsicht: Weitere Cartel-Mitglieder könnten in der Umgebung sein.`,
   },
   {
     id: 2,
-    title: "Puzzle 2: The Fountain",
+    title: "Puzzle 2",
     description: "Count the number of water jets at the main plaza fountain.",
     image: "/string_2.png",
     correctAnswer: "seven"
   },
   {
     id: 3,
-    title: "Puzzle 3: The Secret Alley",
+    title: "Puzzle 3",
     description: "What color is the door at the end of the alley?",
     image: "/string_4.png",
     correctAnswer: "blue"
   },
   {
     id: 4,
-    title: "Puzzle 4: Template",
+    title: "Puzzle 4",
     description: "Placeholder description for puzzle 4.",
     image: "/string_3.png",
     correctAnswer: "secret4"
   },
   {
     id: 5,
-    title: "Puzzle 5: Template",
+    title: "Puzzle 5:",
     description: "Placeholder description for puzzle 5.",
     image: "/pwd_2.png",
     correctAnswer: "secret5"
   },
   {
     id: 6,
-    title: "Puzzle 6: Template",
+    title: "Puzzle 6",
     description: "Placeholder description for puzzle 6.",
     image: "/string_5.png",
     correctAnswer: "secret6"
   },
   {
     id: 7,
-    title: "Puzzle 7: Template",
+    title: "Puzzle 7",
     description: "Placeholder description for puzzle 7.",
     image: "/pwd_1.png",
     correctAnswer: "secret7"

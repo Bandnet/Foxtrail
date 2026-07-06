@@ -3,6 +3,59 @@ import { HashRouter, Routes, Route, Navigate, useNavigate, useParams } from 'rea
 import ReactMarkdown from 'react-markdown';
 import { puzzles } from './puzzlesData';
 
+const TRAIL_ORDER_STORAGE_KEY = 'foxtrail_trail_order';
+
+const shuffleArray = (items) => {
+  const shuffled = [...items];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  return shuffled;
+};
+
+const createRouteKey = (index) => {
+  const randomPart = typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID().slice(0, 8)
+    : Math.random().toString(36).slice(2, 10);
+
+  return `${index + 1}-${randomPart}`;
+};
+
+const createTrailOrder = () => {
+  const orderedPuzzleIds = puzzles
+    .slice()
+    .sort((leftPuzzle, rightPuzzle) => leftPuzzle.id - rightPuzzle.id)
+    .map((puzzle) => puzzle.id);
+
+  return orderedPuzzleIds.map((puzzleId, index) => ({
+    puzzleId,
+    routeKey: createRouteKey(index),
+  }));
+};
+
+const loadTrailOrder = () => {
+  try {
+    const savedTrailOrder = localStorage.getItem(TRAIL_ORDER_STORAGE_KEY);
+
+    if (!savedTrailOrder) {
+      return null;
+    }
+
+    const parsedTrailOrder = JSON.parse(savedTrailOrder);
+
+    if (!Array.isArray(parsedTrailOrder) || parsedTrailOrder.length !== puzzles.length) {
+      return null;
+    }
+
+    return parsedTrailOrder;
+  } catch {
+    return null;
+  }
+};
+
 // --- Shared CSS Styling Theme ---
 const theme = {
   container: {
@@ -96,9 +149,12 @@ const Home = ({ setMaxUnlocked }) => {
   const navigate = useNavigate();
 
   const startTrail = () => {
-    setMaxUnlocked(0);
+    const freshTrailOrder = createTrailOrder();
+
+    localStorage.setItem(TRAIL_ORDER_STORAGE_KEY, JSON.stringify(freshTrailOrder));
     localStorage.setItem('foxtrail_progress', '0');
-    navigate('/puzzle/0');
+    setMaxUnlocked(0);
+    navigate(`/puzzle/${freshTrailOrder[0].routeKey}`);
   };
 
   return (
@@ -117,16 +173,18 @@ const Home = ({ setMaxUnlocked }) => {
 
 // --- Single Puzzle Template Component ---
 const PuzzlePage = ({ maxUnlocked, setMaxUnlocked }) => {
-  const { id } = useParams();
+  const { routeKey } = useParams();
   const navigate = useNavigate();
-  const puzzleId = parseInt(id, 10);
+  const trailOrder = loadTrailOrder() ?? createTrailOrder();
+  const currentStepIndex = trailOrder.findIndex((step) => step.routeKey === routeKey);
   
   const [inputAnswer, setInputAnswer] = useState('');
   const [error, setError] = useState('');
 
-  const puzzle = puzzles.find(p => p.id === puzzleId);
+  const currentStep = trailOrder[currentStepIndex];
+  const puzzle = puzzles.find((item) => item.id === currentStep?.puzzleId);
 
-  if (!puzzle || puzzleId > maxUnlocked) {
+  if (!puzzle || currentStepIndex === -1 || currentStepIndex > maxUnlocked) {
     return <Navigate to="/" replace />;
   }
 
@@ -137,14 +195,17 @@ const PuzzlePage = ({ maxUnlocked, setMaxUnlocked }) => {
       setError('');
       setInputAnswer('');
       
-      const nextPuzzleId = puzzleId + 1;
-      
-      if (nextPuzzleId <= puzzles.length) {
-        if (nextPuzzleId > maxUnlocked) {
-          setMaxUnlocked(nextPuzzleId);
-          localStorage.setItem('foxtrail_progress', nextPuzzleId.toString());
+      const nextStep = trailOrder[currentStepIndex + 1];
+
+      if (nextStep) {
+        const nextUnlockedStep = currentStepIndex + 1;
+
+        if (nextUnlockedStep > maxUnlocked) {
+          setMaxUnlocked(nextUnlockedStep);
+          localStorage.setItem('foxtrail_progress', nextUnlockedStep.toString());
         }
-        navigate(`/puzzle/${nextPuzzleId}`);
+
+        navigate(`/puzzle/${nextStep.routeKey}`);
       } else {
         navigate('/finish');
       }
@@ -156,7 +217,7 @@ const PuzzlePage = ({ maxUnlocked, setMaxUnlocked }) => {
   return (
     <div style={theme.container}>
       <span style={{ fontSize: '14px', textTransform: 'uppercase', tracking: '1px', color: '#95a5a6', fontWeight: 'bold' }}>
-        Stage {puzzle.id} of {puzzles.length}
+        Stage {currentStepIndex + 1} of {trailOrder.length}
       </span>
       <h2 style={{ marginTop: '5px', marginBottom: '15px', color: '#2c3e50' }}>{puzzle.title}</h2>
       
@@ -205,40 +266,25 @@ const PuzzlePage = ({ maxUnlocked, setMaxUnlocked }) => {
 
 // --- Finish Page Component ---
 const Finish = () => {
-  const finishInstructions = `## Wie es jetzt weitergeht
+  const finishInstructions = `**Wie es jetzt weitergeht**
 
-Jedes Bild ist ein Hinweis. Schau es dir genau an und vergleiche es mit dem Ort, an dem ihr gerade seid.
+Jedes Bild ist ein Teil eines Swisstranfer Links. Der Link besteht aus 5 Teile und es wird immer mit einem Bindestrich verbunden(-). Z.B https://www.swisstransfer.com/d/abc123-1122-3344-5566-12ab34cd
 
-1. Lies den Text über dem Bild.
-2. Untersuche das Bild und suche nach Details, Objekten oder Markierungen.
-3. Gehe zum passenden Ort draußen und finde dort den versteckten Code.
-4. Trage den Code im nächsten Rätsel ein.
+Es ist auch mit einen Password geschütz, dies ist gleich aufgebaut: string1-string2
 
-Wenn du unsicher bist, geh einfach zum vorherigen Rätsel zurück und prüfe Bild und Text noch einmal.`;
-  const finishChecklist = [
-    'Bild genau anschauen',
-    'Text und Bild miteinander vergleichen',
-    'Am richtigen Ort den Code suchen',
-    'Code im nächsten Rätsel eingeben'
-  ];
+Link: 1-1 2-2 3-4 4-3 6-5
+
+PWD: 7-1 5-2
+
+Finde das Beweisvideo und ehre Raul's Tod und bringe Ramirez hinter Gitter!!
+`;
 
   return (
     <div style={theme.container}>
-      <span style={{ fontSize: '64px' }}>🏆</span>
-      <h1 style={{ color: '#27ae60', margin: '10px 0' }}>Success!</h1>
-      <p style={{ fontSize: '18px', color: '#34495e', marginBottom: '30px' }}>
-        Fantastic job! You solved every single mystery along the trail and finished the hunt.
-      </p>
+      <h1 style={{ color: '#c70808', margin: '10px 0' }}>Fast Fertig!</h1>
+
       <div style={{ ...theme.markdown, backgroundColor: '#f8fafc', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '18px 20px', marginBottom: '24px' }}>
         <ReactMarkdown components={markdownComponents}>{finishInstructions}</ReactMarkdown>
-      </div>
-      <div style={{ textAlign: 'left', marginBottom: '24px' }}>
-        <h2 style={{ marginBottom: '12px', color: '#2c3e50', fontSize: '20px' }}>To Do</h2>
-        <ul style={{ margin: 0, paddingLeft: '22px', color: '#34495e', lineHeight: '1.8' }}>
-          {finishChecklist.map((item) => (
-            <li key={item} style={{ marginBottom: '6px' }}>{item}</li>
-          ))}
-        </ul>
       </div>
       <button 
         onClick={() => window.location.hash = '/'} 
@@ -262,7 +308,7 @@ export default function App() {
       <div style={{ backgroundColor: '#f5f7fa', minHeight: '100vh', padding: '10px', boxSizing: 'border-box' }}>
         <Routes>
           <Route path="/" element={<Home setMaxUnlocked={setMaxUnlocked} />} />
-          <Route path="/puzzle/:id" element={<PuzzlePage maxUnlocked={maxUnlocked} setMaxUnlocked={setMaxUnlocked} />} />
+          <Route path="/puzzle/:routeKey" element={<PuzzlePage maxUnlocked={maxUnlocked} setMaxUnlocked={setMaxUnlocked} />} />
           <Route path="/finish" element={<Finish />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
