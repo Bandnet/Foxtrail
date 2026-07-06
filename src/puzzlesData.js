@@ -1,72 +1,79 @@
 export const puzzles = [
   {
+    id: 0,
+    title: "Die Erklärung",
+    description: `Vor drei Tagen geschah das Unfassbare: Rodrigo Ramirez, das Oberhaupt des berüchtigten Cartels, fuhr mit seinem Auto direkt in die Brainrot Convention hinein und riss sechs unschuldige Kinder und das Tung Tung Tung Sahur in den Tod.
+
+Die Kameras liefen, alles wurde aufgezeichnet, und das Video existiert irgendwo im Netz, geschützt durch einen Link und ein Passwort. Detektiv Raul Escobaum war dem Fall auf der Spur. Er hatte beide Zugangsdaten auf einem einzigen Blatt Papier notiert und war kurz davor, das Beweismaterial zu sichern und der Welt zu präsentieren.
+
+Doch das Cartel war schneller. Raul wurde gefunden tot. In der Panik, das Beweismaterial zu vernichten, zerriss jemand das Blatt in Eile, doch die Papierfetzen wurden nicht verbrannt wie befohlen, sondern verstreut und gingen an verschiedenen Orten verloren.
+
+Jetzt hat Rodrigo Ramirez davon erfahren. Er ist ausser sich vor Wut und hat seine Leute ausgeschickt, um jede einzelne Spur zu finden und endgültig zu vernichten.
+
+Ihr seid die Einzigen, die noch eine Chance haben. Findet die Papierfetzen, rekonstruiert den Link und das Passwort, und sichert das Video, bevor das Cartel euch zuvorkommt.
+
+Raul konnte es nicht mehr fertigbringen, aber seine Spur ist noch da, zerstreut und versteckt, und sie wartet auf jemanden, der schneller ist als die Killer, die bereits auf dem Weg sind.
+
+Jede Sekunde zählt. Das Foxtrail beginnt jetzt. Pro Rätsel gibt es ein Bild (merke es dir!), ein Rätsel für den nächsten Ort und ein Inputfeld für den Code, den du am neuen Ort finden wirst.
+
+Erste Code = Start`,
+    image: "",
+    correctAnswer: "Start"
+  },
+  {
     id: 1,
-    title: "Puzzle 1: The Beginning",
-    description: "Look around the old oak tree. What number do you see carved into the wood?",
-    image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=600&q=80", // Replace with your image path
+    title: "Puzzle 1",
+    description: `**POLIZEIBERICHT – Aktenzeichen BR-2024-0847**
+
+Laut anonymem Hinweis hält sich ein Mitglied des Ramirez-Cartels regelmäßig in einem Dönerladen namens „Bang" in der Nähe der Pionierstrasse 28 auf. Der Verdächtige wurde mehrfach dabei beobachtet, neben den Blumentöpfen vor dem Lokal Zigaretten zu rauchen.
+
+Es besteht der Verdacht, dass er unwissentlich einen der Papierfetzen vom Büro Escobaums an seiner Kleidung mitgeführt und dort verloren hat. Umgehende Überprüfung des Bereichs um die Blumentöpfe wird empfohlen.
+
+Vorsicht: Weitere Cartel-Mitglieder könnten in der Umgebung sein.`,
+    image: "/string_1.png",
+    afterImageText: `**Hinweis:** Wie viele Blumentöpfe hat es direkt vor dem Lokal?\n\nSchau genau hin, dort liegt der nächste Teil.`,
     correctAnswer: "42"
   },
   {
     id: 2,
     title: "Puzzle 2: The Fountain",
     description: "Count the number of water jets at the main plaza fountain.",
-    image: "https://images.unsplash.com/photo-1595841696660-aba61a41e97e?auto=format&fit=crop&w=600&q=80", // Replace with your image path
+    image: "/string_2.png",
     correctAnswer: "seven"
   },
   {
     id: 3,
     title: "Puzzle 3: The Secret Alley",
     description: "What color is the door at the end of the alley?",
-    image: "https://images.unsplash.com/photo-1527269537047-44f172912427?auto=format&fit=crop&w=600&q=80", // Replace with your image path
+    image: "/string_4.png",
     correctAnswer: "blue"
   },
   {
     id: 4,
     title: "Puzzle 4: Template",
     description: "Placeholder description for puzzle 4.",
-    image: "https://via.placeholder.com/600x400?text=Puzzle+4+Hint+Image",
+    image: "/string_3.png",
     correctAnswer: "secret4"
   },
   {
     id: 5,
     title: "Puzzle 5: Template",
     description: "Placeholder description for puzzle 5.",
-    image: "https://via.placeholder.com/600x400?text=Puzzle+5+Hint+Image",
+    image: "/pwd_2.png",
     correctAnswer: "secret5"
   },
   {
     id: 6,
     title: "Puzzle 6: Template",
     description: "Placeholder description for puzzle 6.",
-    image: "https://via.placeholder.com/600x400?text=Puzzle+6+Hint+Image",
+    image: "/string_5.png",
     correctAnswer: "secret6"
   },
   {
     id: 7,
     title: "Puzzle 7: Template",
     description: "Placeholder description for puzzle 7.",
-    image: "https://via.placeholder.com/600x400?text=Puzzle+7+Hint+Image",
+    image: "/pwd_1.png",
     correctAnswer: "secret7"
-  },
-  {
-    id: 8,
-    title: "Puzzle 8: Template",
-    description: "Placeholder description for puzzle 8.",
-    image: "https://via.placeholder.com/600x400?text=Puzzle+8+Hint+Image",
-    correctAnswer: "secret8"
-  },
-  {
-    id: 9,
-    title: "Puzzle 9: Template",
-    description: "Placeholder description for puzzle 9.",
-    image: "https://via.placeholder.com/600x400?text=Puzzle+9+Hint+Image",
-    correctAnswer: "secret9"
-  },
-  {
-    id: 10,
-    title: "Puzzle 10: The Final Stretch",
-    description: "What is the name of the final landmark?",
-    image: "https://via.placeholder.com/600x400?text=Final+Puzzle+Hint+Image",
-    correctAnswer: "castle"
   }
 ];
