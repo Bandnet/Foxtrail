@@ -1,122 +1,197 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from 'react';
+import { HashRouter, Routes, Route, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { puzzles } from './puzzlesData';
 
-function App() {
-  const [count, setCount] = useState(0)
+// --- Shared CSS Styling Theme ---
+const theme = {
+  container: {
+    maxWidth: '600px',
+    margin: '60px auto',
+    padding: '30px',
+    fontFamily: '"Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    backgroundColor: '#ffffff',
+    borderRadius: '16px',
+    boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
+    textAlign: 'center',
+    color: '#2c3e50'
+  },
+  button: {
+    padding: '12px 28px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    backgroundColor: '#e67e22',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    transition: 'background-color 0.2s',
+    boxShadow: '0 4px 6px rgba(230, 126, 34, 0.2)'
+  },
+  input: {
+    width: '100%',
+    maxWidth: '320px',
+    padding: '12px 16px',
+    fontSize: '16px',
+    borderRadius: '8px',
+    border: '2px solid #bdc3c7',
+    outline: 'none',
+    boxSizing: 'border-box',
+    marginBottom: '15px',
+    transition: 'border-color 0.2s'
+  },
+  hintImage: {
+    width: '100%',
+    maxHeight: '300px',
+    objectFit: 'cover',
+    borderRadius: '12px',
+    marginTop: '15px',
+    marginBottom: '20px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+  }
+};
+
+// --- Home/Start Page Component ---
+const Home = ({ setMaxUnlocked }) => {
+  const navigate = useNavigate();
+
+  const startTrail = () => {
+    setMaxUnlocked(1);
+    localStorage.setItem('foxtrail_progress', '1');
+    navigate('/puzzle/1');
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+    <div style={theme.container}>
+      <span style={{ fontSize: '64px' }}>🦊</span>
+      <h1 style={{ fontSize: '32px', margin: '10px 0 20px 0', color: '#2c3e50' }}>Foxtrail Adventure</h1>
+      <p style={{ fontSize: '16px', color: '#7f8c8d', lineHeight: '1.6', marginBottom: '30px' }}>
+        Track down the clues, explore your surroundings, and solve the riddles to find the hidden path.
+      </p>
+      <button onClick={startTrail} style={theme.button}>
+        Start Hunt
+      </button>
+    </div>
+  );
+};
+
+// --- Single Puzzle Template Component ---
+const PuzzlePage = ({ maxUnlocked, setMaxUnlocked }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const puzzleId = parseInt(id, 10);
+  
+  const [inputAnswer, setInputAnswer] = useState('');
+  const [error, setError] = useState('');
+
+  const puzzle = puzzles.find(p => p.id === puzzleId);
+
+  if (!puzzle || puzzleId > maxUnlocked) {
+    return <Navigate to="/" replace />;
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (inputAnswer.trim().toLowerCase() === puzzle.correctAnswer.toLowerCase()) {
+      setError('');
+      setInputAnswer('');
+      
+      const nextPuzzleId = puzzleId + 1;
+      
+      if (nextPuzzleId <= puzzles.length) {
+        if (nextPuzzleId > maxUnlocked) {
+          setMaxUnlocked(nextPuzzleId);
+          localStorage.setItem('foxtrail_progress', nextPuzzleId.toString());
+        }
+        navigate(`/puzzle/${nextPuzzleId}`);
+      } else {
+        navigate('/finish');
+      }
+    } else {
+      setError('❌ Incorrect answer. Take a closer look!');
+    }
+  };
+
+  return (
+    <div style={theme.container}>
+      <span style={{ fontSize: '14px', textTransform: 'uppercase', tracking: '1px', color: '#95a5a6', fontWeight: 'bold' }}>
+        Stage {puzzle.id} of {puzzles.length}
+      </span>
+      <h2 style={{ marginTop: '5px', marginBottom: '15px', color: '#2c3e50' }}>{puzzle.title}</h2>
+      
+      <p style={{ fontSize: '16px', lineHeight: '1.6', color: '#34495e', marginBottom: '20px' }}>
+        {puzzle.description}
+      </p>
+
+      {/* Render Image hint if present */}
+      {puzzle.image && (
+        <img 
+          src={puzzle.image} 
+          alt={`Clue for ${puzzle.title}`} 
+          style={theme.hintImage} 
+        />
+      )}
+      
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <input 
+          type="text" 
+          value={inputAnswer} 
+          onChange={(e) => setInputAnswer(e.target.value)} 
+          placeholder="Type your discovery here..." 
+          style={theme.input}
+          onFocus={(e) => e.target.style.borderColor = '#e67e22'}
+          onBlur={(e) => e.target.style.borderColor = '#bdc3c7'}
+        />
+        <button type="submit" style={{ ...theme.button, backgroundColor: '#2ecc71', boxShadow: '0 4px 6px rgba(46, 204, 113, 0.2)' }}>
+          Verify Answer
         </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      </form>
+      
+      {error && (
+        <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#fdeae8', color: '#c0392b', borderRadius: '8px', fontWeight: '500' }}>
+          {error}
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      )}
+    </div>
+  );
+};
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+// --- Finish Page Component ---
+const Finish = () => {
+  return (
+    <div style={theme.container}>
+      <span style={{ fontSize: '64px' }}>🏆</span>
+      <h1 style={{ color: '#27ae60', margin: '10px 0' }}>Success!</h1>
+      <p style={{ fontSize: '18px', color: '#34495e', marginBottom: '30px' }}>
+        Fantastic job! You solved every single mystery along the trail and finished the hunt.
+      </p>
+      <button 
+        onClick={() => window.location.hash = '/'} 
+        style={{ ...theme.button, backgroundColor: '#34495e', boxShadow: '0 4px 6px rgba(52, 73, 94, 0.2)' }}
+      >
+        Return Home
+      </button>
+    </div>
+  );
+};
+
+// --- Main App Setup ---
+export default function App() {
+  const [maxUnlocked, setMaxUnlocked] = useState(() => {
+    const saved = localStorage.getItem('foxtrail_progress');
+    return saved ? parseInt(saved, 10) : 1;
+  });
+
+  return (
+    <HashRouter>
+      <div style={{ backgroundColor: '#f5f7fa', minHeight: '100vh', padding: '10px', boxSizing: 'border-box' }}>
+        <Routes>
+          <Route path="/" element={<Home setMaxUnlocked={setMaxUnlocked} />} />
+          <Route path="/puzzle/:id" element={<PuzzlePage maxUnlocked={maxUnlocked} setMaxUnlocked={setMaxUnlocked} />} />
+          <Route path="/finish" element={<Finish />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </HashRouter>
+  );
 }
-
-export default App
