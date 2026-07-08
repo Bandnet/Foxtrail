@@ -30,7 +30,7 @@ Laut anonymem Hinweis hält sich ein Mitglied des Ramirez-Cartels regelmäßig i
 Es besteht der Verdacht, dass er unwissentlich einen der Papierfetzen vom Büro Escobaums an seiner Kleidung mitgeführt und dort verloren hat. Umgehende Überprüfung des Bereichs um die Blumentöpfe wird empfohlen.
 
 Vorsicht: Weitere Cartel-Mitglieder könnten in der Umgebung sein.`,
-    image: "/string_1.png",
+    image: "string_1.png",
     afterImageText: `**Hinweis:** Wie viele Blumentöpfe hat es direkt vor dem Lokal?\n\nSchau genau hin, dort liegt der nächste Teil.`,
     correctAnswer: "8"
   },
@@ -44,7 +44,7 @@ Neue Erkenntnisse zum jüngsten Mitglied des Ramirez-Cartels, identifiziert als 
 Es ist davon auszugehen, dass er sich erneut einen der Papierfetzen Escobaums unbewusst an sich genommen hat und diesen möglicherweise während des Filmbesuchs im Kesselhaus verloren hat. 
 
 Empfehlung: Filmprogramm prüfen, entsprechende Vorstellung ausmachen und Bereich nach verdächtigen Papierschnipseln absuchen. Carlito gilt als unberechenbar – Vorsicht ist angebracht.`,
-    image: "/string_2.png",
+    image: "string_2.png",
     afterImageText: `Trage hier den gefundenen Code oder den gesuchten Filmtitel ein.`,
     correctAnswer: "The Sheep Detectives - Glennkill: Ein Schafskrimi" // Hier die gesuchte Lösung für das Kesselhaus eintragen
   },
@@ -58,7 +58,7 @@ Ein Zeuge meldete sich freiwillig bei der Winti-Polizei und gab an, im BH Winti 
 Es ist nicht unwahrscheinlich, dass der Beschuldigte im Besitz weiterer Papierfetzen aus dem Büro Escobaums ist oder diese im Umfeld des BH Winti deponiert hat. 
 
 Hinweis: Im direkten Umgebungsbereich befinden sich mehrere Gleise. Multipliziert deren Anzahl miteinander (oder folge der Spur vor Ort), um den nächsten Standort zu ermitteln. Umgehende Überprüfung empfohlen.`,
-    image: "/string_4.png",
+    image: "string_4.png",
     afterImageText: `Multipliziere die Anzahl der Gleise wie im Bericht beschrieben.`,
     correctAnswer: "362880" // Hier das mathematische Ergebnis oder den Code eintragen
   },
@@ -72,7 +72,7 @@ Ein weiteres identifiziertes Cartel-Mitglied fällt durch stark religiöses Verh
 Es wird vermutet, dass der Gesuchte bei seinen Besuchen einen der Papierfetzen Escobaums in der Nähe der Kirche abgelegt hat. 
 
 Hinweis für das weitere Vorgehen: Auf dem Grasgelände der Kirche befindet sich ein spezifisches Objekt, das als Orientierungspunkt dient. Gesucht wird die Bezeichnung dieses Objekts auf dem Kirchenrasen. Umgehende Überprüfung des Geländes empfohlen, jedoch diskret vorgehen – kirchliche Besucher sollen nicht beunruhigt werden.`,
-    image: "/string_3.png",
+    image: "string_3.png",
     afterImageText: `Wie lautet die Bezeichnung des Objekts auf dem Kirchenrasen?`,
     correctAnswer: "Labyrinth" // Hier die Bezeichnung des Objekts eintragen
   },
@@ -86,7 +86,7 @@ Ein weiteres Cartel-Mitglied konnte im Sulzerturm Winterthur lokalisiert werden,
 Spezifischer Hinweis: Vor dem Sulzerturm befindet sich ein Wasserbereich mit mehreren Blöcken. Die Anzahl dieser Blöcke im Wasser stellt die gesuchte Antwort für den nächsten Standort dar. 
 
 Empfehlung: Vor Ort gehen, Blöcke im Wasser sorgfältig zählen und Anzahl als Lösung notieren. Vorsicht vor Verdächtigen im und um das Gebäude.`,
-    image: "/pwd_2.png",
+    image: "pwd_2.png",
     afterImageText: `Wie viele Blöcke befinden sich im Wasserbereich vor dem Sulzerturm?`,
     correctAnswer: "30" // Hier die gezählte Anzahl der Blöcke eintragen
   },
@@ -100,7 +100,7 @@ Neue Erkenntnisse: Das im Sulzerturm tätige Cartel-Mitglied wurde kürzlich bei
 Spezifischer Hinweis: Auf der Strecke in Richtung Neuwiesen befinden sich mehrere Zebrastreifen. Jeder komplette Zebrastreifen gilt als eins, nicht die einzelnen weißen Balken. Die Gesamtanzahl der Zebrastreifen auf dem Weg stellt die gesuchte Lösung dar. 
 
 Umgehende Überprüfung empfohlen. José gilt als gefährlich – Distanz halten.`,
-    image: "/string_5.png",
+    image: "string_5.png",
     afterImageText: `Wie viele komplette Zebrastreifen habt ihr auf dem Weg gezählt?`,
     correctAnswer: "8" // Hier die Anzahl der Zebrastreifen eintragen
   },
@@ -114,7 +114,7 @@ José wurde zuletzt im Migros Restaurant in Neuwiesen gesichtet, wo er sich offe
 Spezifischer Hinweis: Die Anzahl der Kassen im Migros Restaurant Neuwiesen stellt die gesuchte Lösung für den nächsten Standort dar. Vor Ort gehen, Kassen zählen und Anzahl als Antwort notieren. 
 
 José könnte sich weiterhin in der Nähe aufhalten – Vorsicht ist geboten.`,
-    image: "/pwd_1.png",
+    image: "pwd_1.png",
     afterImageText: `Wie viele Kassen gibt es im Migros Restaurant Neuwiesen?`,
     correctAnswer: "4" // Hier die Anzahl der Kassen eintragen
   },
